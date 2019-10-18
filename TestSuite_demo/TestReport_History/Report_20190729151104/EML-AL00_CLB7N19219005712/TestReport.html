@@ -1,0 +1,1019 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>EML-AL00自动化测试报告</title>
+    <meta name="generator" content="HTMLTestRunner 1.2.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <script src="https://img.hcharts.cn/highcharts/highcharts.js"></script>
+    <script src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
+    
+<style type="text/css" media="screen">
+body        { font-family: Microsoft YaHei;padding: 20px; font-size: 100%; }
+table       { font-size: 100%; }
+.table tbody tr td{
+            vertical-align: middle;
+        }
+
+/* -- heading ---------------------------------------------------------------------- */
+.heading .description, .attribute {
+    clear: both;
+}
+
+/* --- 失败和错误合集样式 -- Gelomen --- */
+.failCollection, .errorCollection {
+    width: 100px;
+    float: left;
+}
+#failCaseOl li {
+    color: red
+}
+#errorCaseOl li {
+    color: orange
+}
+
+/* --- 打开截图特效样式 -- Gelomen --- */
+.data-img{
+    cursor:pointer
+}
+
+.pic_looper{
+    width:100%;
+    height:100%;
+    position: fixed;
+    left: 0;
+    top:0;
+    opacity: 0.6;
+    background: #000;
+    display: none;
+    z-index: 100;
+}
+
+.pic_show{
+    width:100%;
+    position:fixed;
+    left:0;
+    top:0;
+    right:0;
+    bottom:0;
+    margin:auto;
+    text-align: center;
+    display: none;
+    z-index: 100;
+}
+
+.pic_box{
+    padding:10px;
+    width:90%;
+    height:90%;
+    margin:40px auto;
+    text-align: center;
+    overflow: hidden;
+}
+
+.pic_box img{
+    width: auto;
+    height: 100%;
+    -moz-box-shadow: 0px 0px 20px 0px #000;
+    -webkit-box-shadow: 0px 0px 20px 0px #000;
+    box-shadow: 0px 0px 20px 0px #000;
+}
+
+/* --- 饼状图div样式 -- Gelomen --- */
+#container {
+    width: 450px;
+    height: 300px;
+    float: left;
+}
+
+/* -- report ------------------------------------------------------------------------ */
+#total_row  { font-weight: bold; }
+.passCase   { color: #5cb85c; }
+.failCase   { color: #d9534f; font-weight: bold; }
+.errorCase  { color: #f0ad4e; font-weight: bold; }
+.hiddenRow  { display: none; }
+.testcase   { margin-left: 2em; }
+.screenshot:link { text-decoration: none;color: deeppink; }
+.screenshot:visited { text-decoration: none;color: deeppink; }
+.screenshot:hover { text-decoration: none;color: darkcyan; }
+.screenshot:active { text-decoration: none;color: deeppink; }
+</style>
+
+</head>
+<body >
+<script language="javascript" type="text/javascript">
+
+    $(function(){
+        // 修改 失败 和 错误 用例里对应按钮的颜色ClassName为动态加载 -- Gelomen
+    	$("button").each(function () {
+    	    var text = $(this).text();
+    	    if(text == "失败"){
+    	        $(this).addClass("btn-danger")
+            }else if(text == "错误") {
+                $(this).addClass("btn-warning")
+            }
+        });
+
+        // 给失败和错误合集加样式 -- Gelomen
+        var p_attribute = $("p.attribute");
+        p_attribute.eq(4).addClass("failCollection");
+        p_attribute.eq(5).addClass("errorCollection");
+
+        // 打开截图，放大，点击任何位置可以关闭图片  -- Gelomen
+        $(".screenshot").click(function(){
+            var img = $(this).attr("img");
+            $('.pic_show img').attr('src', img);
+            $('.pic_looper').fadeIn(200);
+            $('.pic_show').fadeIn(200);
+
+            var browserHeight = $(window).height();
+            var pic_boxHeight = $(".pic_box").height();
+            var top = (browserHeight - pic_boxHeight)/2;
+            $('.pic_box').css("margin-top", top + "px")
+
+        });
+        $('.pic_looper, .pic_show').click(function(){
+            $('.pic_looper').fadeOut(200);
+            $('.pic_show').fadeOut(200)
+        });
+        
+        var browserWidth = $(window).width();
+        var margin_left = browserWidth/2 - 450;
+        if(margin_left <= 240){
+            $("#container").css("margin", "auto");
+        }else {
+            $("#container").css("margin-left", margin_left + "px");
+        }
+
+        $(window).resize(function(){
+            // 改变窗口大小时，自动改变图片与顶部的距离  -- Gelomen
+            var browserHeight = $(window).height();
+            var pic_boxHeight = $(".pic_box").height();
+            var top = (browserHeight - pic_boxHeight)/2;
+            $('.pic_box').css("margin-top", top + "px");
+
+
+            // 改变窗口大小时，自动改变饼图的边距  -- Gelomen
+            var browserWidth = $(window).width();
+            var margin_left = browserWidth/2 - 450;
+            if(margin_left <= 240){
+                $("#container").css("margin", "auto");
+            }else {
+                $("#container").css("margin-left", margin_left + "px");
+            }
+        });
+
+        // 距离顶部超过浏览器窗口一屏时，回到顶部按钮才出现  -- Gelomen
+        $(window).scroll(function(){
+            var browserHeight = $(window).height();
+            var top = $(window).scrollTop();
+            if(top >= browserHeight){
+                $("#toTop").css("display", "block")
+            }else {
+                $("#toTop").css("display", "none")
+            }
+        })
+        
+        // 增加回到顶部过程的动画，以看上去不会那么生硬  -- Gelomen
+        $("#toTop").click(function() {
+            $("html,body").animate({"scrollTop":0}, 700)
+        })
+        
+        // 增加饼状图  -- Gelomen
+        $('#container').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                spacing : [0, 0, 0, 0]
+            },
+            credits: {
+                enabled: false
+            },
+            navigation: {
+                buttonOptions: {
+                    enabled: false
+                }
+            },
+            title: {
+                floating:true,
+                text: '测试结果占比'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    colors: ['#81ca9d', '#f16d7e', '#fdc68c'],
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        }
+                    },
+                    point: {
+                        events: {
+                            mouseOver: function(e) {  // 鼠标滑过时动态更新标题
+                                chart.setTitle({
+                                    text: e.target.name+ '\t'+ e.target.y + ' 个'
+                                });
+                            }
+                        }
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                innerSize: '80%',
+                name: '比例',
+                data: [
+                    ['通过', 8],
+                    {
+                        name: '失败',
+                        y: 1,
+                        sliced: true,
+                        selected: true
+                    },
+                    ['错误', 2]
+                ]
+            }]
+        }, function(c) {
+            // 环形图圆心
+            var centerY = c.series[0].center[1],
+                titleHeight = parseInt(c.title.styles.fontSize);
+            c.setTitle({
+                y:centerY + titleHeight/2
+            });
+            chart = c;
+        });
+        
+        // 查看 失败 和 错误 合集链接文字切换  -- Gelomen
+        $(".showDetail").click(function () {
+            if($(this).html() == "点击查看"){
+                $(this).html("点击收起")
+            }else {
+                $(this).html("点击查看")
+            }
+        })
+    });
+    
+    
+output_list = Array();
+
+/*level 调整增加只显示通过用例的分类 --Findyou / 修复筛选显示bug --Gelomen
+0:Summary //all hiddenRow
+1:Failed  //pt&et hiddenRow, ft none
+2:Pass    //pt none, ft&et hiddenRow
+3:Error   //pt&ft hiddenRow, et none
+4:All     //all none
+*/
+function showCase(level) {
+    trs = document.getElementsByTagName("tr");
+    for (var i = 0; i < trs.length; i++) {
+        tr = trs[i];
+        id = tr.id;
+        if (id.substr(0,2) == 'ft') {
+            if (level == 2 || level == 0 || level == 3) {
+                tr.className = 'hiddenRow';
+            }
+            else {
+                tr.className = '';
+                // 切换筛选时只显示预览   -- Gelomen
+                $("div[id^='div_ft']").attr("class", "collapse");
+                $("div[id^='div_et']").attr("class", "collapse");
+            }
+        }
+        if (id.substr(0,2) == 'pt') {
+            if (level == 1 || level == 0 || level == 3) {
+                tr.className = 'hiddenRow';
+            }
+            else {
+                tr.className = '';
+                // 切换筛选时只显示预览   -- Gelomen
+                $("div[id^='div_ft']").attr("class", "collapse");
+                $("div[id^='div_et']").attr("class", "collapse");
+            }
+        }
+        if (id.substr(0,2) == 'et') {
+            if (level == 1 || level == 0 || level == 2) {
+                tr.className = 'hiddenRow';
+            }
+            else {
+                tr.className = '';
+                // 切换筛选时只显示预览   -- Gelomen
+                $("div[id^='div_ft']").attr("class", "collapse");
+                $("div[id^='div_et']").attr("class", "collapse");
+            }
+        }
+    }
+
+    //加入【详细】切换文字变化 --Findyou
+    detail_class=document.getElementsByClassName('detail');
+	//console.log(detail_class.length)
+	if (level == 3) {
+		for (var i = 0; i < detail_class.length; i++){
+			detail_class[i].innerHTML="收起"
+		}
+	}
+	else{
+			for (var i = 0; i < detail_class.length; i++){
+			detail_class[i].innerHTML="详细"
+		}
+	}
+}
+
+function showClassDetail(cid, count) {
+    var id_list = Array(count);
+    var toHide = 1;
+    for (var i = 0; i < count; i++) {
+        //ID修改 点 为 下划线 -Findyou
+        tid0 = 't' + cid.substr(1) + '_' + (i+1);
+        tid = 'f' + tid0;
+        tr = document.getElementById(tid);
+        if (!tr) {
+            tid = 'p' + tid0;
+            tr = document.getElementById(tid);
+            if (!tr) {
+                tid = 'e' + tid0;
+                tr = document.getElementById(tid);
+            }
+        }
+        id_list[i] = tid;
+        if (tr.className) {
+            toHide = 0;
+        }
+    }
+    for (var i = 0; i < count; i++) {
+        tid = id_list[i];
+        //修改点击无法收起的BUG，加入【详细】切换文字变化 --Findyou
+        if (toHide) {
+            document.getElementById(tid).className = 'hiddenRow';
+            document.getElementById(cid).innerText = "详细"
+        }
+        else {
+            document.getElementById(tid).className = '';
+            document.getElementById(cid).innerText = "收起"
+        }
+    }
+}
+
+function html_escape(s) {
+    s = s.replace(/&/g,'&amp;');
+    s = s.replace(/</g,'&lt;');
+    s = s.replace(/>/g,'&gt;');
+    return s;
+}
+</script>
+<div class='pic_looper'></div> <div class='pic_show'><div class='pic_box'><img src=''/></div> </div>
+<div class='heading'>
+<div style="width: 650px; float: left;">
+    <h1 style="font-family: Microsoft YaHei">EML-AL00自动化测试报告</h1>
+    <p class='attribute'><strong>测试人员 : </strong> QA</p>
+<p class='attribute'><strong>开始时间 : </strong> 2019-07-29 15:11:11</p>
+<p class='attribute'><strong>合计耗时 : </strong> 0:01:09.881569</p>
+<p class='attribute'><strong>测试结果 : </strong> 共计 11，通过 8，失败 1，错误 2，通过率 = 72.73%</p>
+<p class='attribute'><strong>失败用例合集 : </strong> <div class='panel-default' style='float: left;'><a class='showDetail' data-toggle='collapse' href='#failCaseOl' style='text-decoration: none;'>点击查看</a></div><ol id='failCaseOl' class='collapse' style='float: left;'><li>test_01_focus_element_exist (test_02_my.testMySelf)</li></ol></p>
+<p class='attribute'><strong>错误用例合集 : </strong> <div class='panel-default' style='float: left;'><a class='showDetail' data-toggle='collapse' href='#errorCaseOl' style='text-decoration: none;'>点击查看</a></div><ol id='errorCaseOl' class='collapse' style='float: left;'><li>test_04_gotofind (test_02_my.testMySelf)</li><li>setUpClass (test_03_my_other.testLogin)</li></ol></p>
+
+    <p class='description'>用例执行情况：</p>
+</div>
+<div id="container"></div>
+</div>
+
+
+
+<div style="width: 500px; clear: both;">
+<p id='show_detail_line'>
+<a class="btn btn-primary" href='javascript:showCase(0)'>概要</a>
+<a class="btn btn-success" href='javascript:showCase(2)'>通过: 8 </a>
+<a class="btn btn-danger" href='javascript:showCase(1)'>失败: 1 </a>
+<a class="btn btn-warning" href='javascript:showCase(3)'>错误: 2 </a>
+<a class="btn btn-info" href='javascript:showCase(4)'>所有: 11 </a>
+</p>
+</div>
+<table id='result_table' class="table table-condensed table-bordered table-hover">
+<colgroup>
+<col align='left' style="width: 300px;"/>
+<col align='right' style="width: 300px;"/>
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' style="width: 200px;"/>
+</colgroup>
+<tr id='header_row' class="text-center success" style="font-weight: bold;font-size: 14px;">
+    <td>用例集/测试用例</td>
+    <td>说明</td>
+    <td>总计</td>
+    <td>通过</td>
+    <td>失败</td>
+    <td>错误</td>
+    <td>耗时</td>
+    <td>详细</td>
+</tr>
+
+<tr class='errorClass warning'>
+    <td>testMySelf</td>
+    <td></td>
+    <td class="text-center">10</td>
+    <td class="text-center">8</td>
+    <td class="text-center">1</td>
+    <td class="text-center">1</td>
+    <td class="text-center">66.46秒</td>
+    <td class="text-center"><a href="javascript:showClassDetail('c1',10)" class="detail" id='c1'>详细</a></td>
+</tr>
+
+<tr id='ft1_1' class='none'>
+    <td class='failCase' style="vertical-align: middle"><div class='testcase'>test_01_focus_element_exist</div></td>
+    <td style="vertical-align: middle"></td>
+    <td colspan='5' align='center'>
+    
+    <!--默认收起错误信息 -Findyou-->
+    <button id='btn_ft1_1' type="button"  class="btn btn-xs collapsed" data-toggle="collapse" data-target='#div_ft1_1'>失败</button>
+    <div id='div_ft1_1' class="collapse">  
+
+    <!-- 默认展开错误信息 -Findyou /  修复失败按钮的颜色 -- Gelomen 
+    <button id='btn_ft1_1' type="button"  class="btn btn-xs" data-toggle="collapse" data-target='#div_ft1_1,#div_ft1_1_screenshot'>失败</button>
+    <div id='div_ft1_1' class="collapse in"> -->
+    
+    <pre style="text-align:left">
+    
+ft1_1: --&gt; my_page.click_my
+点击我的tab
+--&gt; my_page.click_focus
+点击关注
+--&gt; my_page.check_focuslist_touxiang
+--- Logging error ---
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/logging/__init__.py", line 993, in emit
+    msg = self.format(record)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/logging/__init__.py", line 839, in format
+    return fmt.format(record)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/logging/__init__.py", line 576, in format
+    record.message = record.getMessage()
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/logging/__init__.py", line 338, in getMessage
+    msg = msg % self.args
+TypeError: not all arguments converted during string formatting
+Call stack:
+  File "/Users/qfl/lqf_work/aserver/siyu-test/TestSuite_demo/run_cases.py", line 19, in &lt;module&gt;
+    Drivers().run(cases)
+  File "/Users/qfl/lqf_work/aserver/siyu-test/Public/Drivers.py", line 160, in run
+    pool = Pool(processes=len(runs))
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/multiprocessing/context.py", line 119, in Pool
+    context=self.get_context())
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/multiprocessing/pool.py", line 174, in __init__
+    self._repopulate_pool()
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/multiprocessing/pool.py", line 239, in _repopulate_pool
+    w.start()
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/multiprocessing/process.py", line 105, in start
+    self._popen = self._Popen(self)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/multiprocessing/context.py", line 277, in _Popen
+    return Popen(process_obj)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/multiprocessing/popen_fork.py", line 19, in __init__
+    self._launch(process_obj)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/multiprocessing/popen_fork.py", line 73, in _launch
+    code = process_obj._bootstrap()
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/multiprocessing/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/multiprocessing/pool.py", line 119, in worker
+    result = (True, func(*args, **kwds))
+  File "/Users/qfl/lqf_work/aserver/siyu-test/Public/Drivers.py", line 86, in _run_cases
+    run.run(cases)
+  File "/Users/qfl/lqf_work/aserver/siyu-test/Public/RunCases.py", line 35, in run
+    runner.run(cases)
+  File "/Users/qfl/lqf_work/aserver/siyu-test/Public/HTMLTestReport.py", line 827, in run
+    test(result)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/unittest/suite.py", line 122, in run
+    test(result)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/unittest/suite.py", line 122, in run
+    test(result)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/unittest/case.py", line 653, in __call__
+    return self.run(*args, **kwds)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/unittest/case.py", line 605, in run
+    testMethod()
+  File "/Users/qfl/lqf_work/aserver/siyu-test/TestSuite_demo/test_test/test_02_my.py", line 28, in test_01_focus_element_exist
+    assert self.check_focuslist_touxiang() == True
+  File "/Users/qfl/lqf_work/aserver/siyu-test/Public/Decorator.py", line 68, in wrapper
+    ret = func(*args, **kwargs)
+  File "/Users/qfl/lqf_work/aserver/siyu-test/PageObject/my.py", line 23, in check_focuslist_touxiang
+    log.i('检查关注列表-头像',self.d(resourceId='com.wujie.siyu:id/avatar_layout').exists)
+  File "/Users/qfl/lqf_work/aserver/siyu-test/Public/Log.py", line 33, in i
+    self.logger.info(msg, *args, **kwargs)
+Message: '检查关注列表-头像'
+Arguments: (False,)
+--- Logging error ---
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/logging/__init__.py", line 993, in emit
+    msg = self.format(record)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/logging/__init__.py", line 839, in format
+    return fmt.format(record)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/logging/__init__.py", line 576, in format
+    record.message = record.getMessage()
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/logging/__init__.py", line 338, in getMessage
+    msg = msg % self.args
+TypeError: not all arguments converted during string formatting
+Call stack:
+  File "/Users/qfl/lqf_work/aserver/siyu-test/TestSuite_demo/run_cases.py", line 19, in &lt;module&gt;
+    Drivers().run(cases)
+  File "/Users/qfl/lqf_work/aserver/siyu-test/Public/Drivers.py", line 160, in run
+    pool = Pool(processes=len(runs))
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/multiprocessing/context.py", line 119, in Pool
+    context=self.get_context())
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/multiprocessing/pool.py", line 174, in __init__
+    self._repopulate_pool()
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/multiprocessing/pool.py", line 239, in _repopulate_pool
+    w.start()
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/multiprocessing/process.py", line 105, in start
+    self._popen = self._Popen(self)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/multiprocessing/context.py", line 277, in _Popen
+    return Popen(process_obj)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/multiprocessing/popen_fork.py", line 19, in __init__
+    self._launch(process_obj)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/multiprocessing/popen_fork.py", line 73, in _launch
+    code = process_obj._bootstrap()
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/multiprocessing/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/multiprocessing/pool.py", line 119, in worker
+    result = (True, func(*args, **kwds))
+  File "/Users/qfl/lqf_work/aserver/siyu-test/Public/Drivers.py", line 86, in _run_cases
+    run.run(cases)
+  File "/Users/qfl/lqf_work/aserver/siyu-test/Public/RunCases.py", line 35, in run
+    runner.run(cases)
+  File "/Users/qfl/lqf_work/aserver/siyu-test/Public/HTMLTestReport.py", line 827, in run
+    test(result)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/unittest/suite.py", line 122, in run
+    test(result)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/unittest/suite.py", line 122, in run
+    test(result)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/unittest/case.py", line 653, in __call__
+    return self.run(*args, **kwds)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/unittest/case.py", line 605, in run
+    testMethod()
+  File "/Users/qfl/lqf_work/aserver/siyu-test/TestSuite_demo/test_test/test_02_my.py", line 28, in test_01_focus_element_exist
+    assert self.check_focuslist_touxiang() == True
+  File "/Users/qfl/lqf_work/aserver/siyu-test/Public/Decorator.py", line 68, in wrapper
+    ret = func(*args, **kwargs)
+  File "/Users/qfl/lqf_work/aserver/siyu-test/PageObject/my.py", line 23, in check_focuslist_touxiang
+    log.i('检查关注列表-头像',self.d(resourceId='com.wujie.siyu:id/avatar_layout').exists)
+  File "/Users/qfl/lqf_work/aserver/siyu-test/Public/Log.py", line 33, in i
+    self.logger.info(msg, *args, **kwargs)
+Message: '检查关注列表-头像'
+Arguments: (True,)
+检查关注列表-头像 True
+--&gt; my_page.check_focuslist_username
+检查关注列表-昵称
+--&gt; my_page.check_focuslist_tab
+检查关注列表-标签
+--&gt; my_page.check_focuslist_jianjie
+检查关注列表-简介
+--&gt; my_page.check_focuslist_find
+检查关注列表-去找ta
+Traceback (most recent call last):
+  File "/Users/qfl/lqf_work/aserver/siyu-test/TestSuite_demo/test_test/test_02_my.py", line 32, in test_01_focus_element_exist
+    assert self.check_focuslist_find() == True
+AssertionError
+
+
+    </pre>
+    </div>
+    <td class="text-center" style="vertical-align: middle">
+    <div </div></td>
+</tr>
+
+<tr id='pt1_2' class='hiddenRow'>
+    <td class='passCase' style="vertical-align: middle"><div class='testcase'>test_02_focus_pinfo</div></td>
+    <td style="vertical-align: middle"></td>
+    <td colspan='5' align='center'>
+    
+    <!--默认收起错误信息 -Findyou-->
+    <button id='btn_pt1_2' type="button"  class="btn btn-xs collapsed" data-toggle="collapse" data-target='#div_pt1_2'>通过</button>
+    <div id='div_pt1_2' class="collapse">  
+
+    <!-- 默认展开错误信息 -Findyou /  修复失败按钮的颜色 -- Gelomen 
+    <button id='btn_pt1_2' type="button"  class="btn btn-xs" data-toggle="collapse" data-target='#div_pt1_2,#div_pt1_2_screenshot'>通过</button>
+    <div id='div_pt1_2' class="collapse in"> -->
+    
+    <pre style="text-align:left">
+    
+pt1_2: --&gt; my_page.click_userinfo
+进入个人信息页面
+--&gt; my_page.check_userinfo_touxiang
+个人信息头像
+--&gt; my_page.check_tab
+检查用户标签
+--&gt; my_page.check_guanzhu
+检查关注
+--&gt; my_page.check_fans
+检查粉丝
+--&gt; my_page.check_photo
+检查用户相片
+--&gt; my_page.check_shouhu
+检查守护榜
+--&gt; my_page.check_gift
+检查礼物
+--&gt; my_page.move_to_bot
+移动到底部
+--&gt; my_page.check_magic
+检查魔法
+--&gt; my_page.check_car
+检查座驾
+
+
+    </pre>
+    </div>
+    <td class="text-center" style="vertical-align: middle">
+    <div </div></td>
+</tr>
+
+<tr id='pt1_3' class='hiddenRow'>
+    <td class='passCase' style="vertical-align: middle"><div class='testcase'>test_03_more</div></td>
+    <td style="vertical-align: middle"></td>
+    <td colspan='5' align='center'>
+    
+    <!--默认收起错误信息 -Findyou-->
+    <button id='btn_pt1_3' type="button"  class="btn btn-xs collapsed" data-toggle="collapse" data-target='#div_pt1_3'>通过</button>
+    <div id='div_pt1_3' class="collapse">  
+
+    <!-- 默认展开错误信息 -Findyou /  修复失败按钮的颜色 -- Gelomen 
+    <button id='btn_pt1_3' type="button"  class="btn btn-xs" data-toggle="collapse" data-target='#div_pt1_3,#div_pt1_3_screenshot'>通过</button>
+    <div id='div_pt1_3' class="collapse in"> -->
+    
+    <pre style="text-align:left">
+    
+pt1_3: --&gt; my_page.check_jubao
+点击举报
+获取的信息是True
+--&gt; my_page.go_back
+返回上一页
+
+
+    </pre>
+    </div>
+    <td class="text-center" style="vertical-align: middle">
+    <div </div></td>
+</tr>
+
+<tr id='et1_4' class='none'>
+    <td class='errorCase' style="vertical-align: middle"><div class='testcase'>test_04_gotofind</div></td>
+    <td style="vertical-align: middle"></td>
+    <td colspan='5' align='center'>
+    
+    <!--默认收起错误信息 -Findyou-->
+    <button id='btn_et1_4' type="button"  class="btn btn-xs collapsed" data-toggle="collapse" data-target='#div_et1_4'>错误</button>
+    <div id='div_et1_4' class="collapse">  
+
+    <!-- 默认展开错误信息 -Findyou /  修复失败按钮的颜色 -- Gelomen 
+    <button id='btn_et1_4' type="button"  class="btn btn-xs" data-toggle="collapse" data-target='#div_et1_4,#div_et1_4_screenshot'>错误</button>
+    <div id='div_et1_4' class="collapse in"> -->
+    
+    <pre style="text-align:left">
+    
+et1_4: --&gt; my_page.goto_find
+点击去找ta
+Traceback (most recent call last):
+  File "/Users/qfl/lqf_work/aserver/siyu-test/Public/Decorator.py", line 68, in wrapper
+    ret = func(*args, **kwargs)
+  File "/Users/qfl/lqf_work/aserver/siyu-test/PageObject/my.py", line 177, in goto_find
+    self.d(resourceId='com.wujie.siyu:id/tv_user_where').click()
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/uiautomator2/session.py", line 38, in _inner
+    return fn(self, *args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/uiautomator2/session.py", line 766, in click
+    self.must_wait(timeout=timeout)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/uiautomator2/session.py", line 961, in must_wait
+    raise UiObjectNotFoundError({'code': -32002, 'method': 'wait'})
+uiautomator2.exceptions.UiObjectNotFoundError: -32002 Client error: &lt;&gt; data: , method: None
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/qfl/lqf_work/aserver/siyu-test/TestSuite_demo/test_test/test_02_my.py", line 56, in test_04_gotofind
+    self.goto_find()
+  File "/Users/qfl/lqf_work/aserver/siyu-test/Public/Decorator.py", line 77, in wrapper
+    raise Exception(e)
+Exception: -32002 Client error: &lt;&gt; data: , method: None
+
+
+    </pre>
+    </div>
+    <td class="text-center" style="vertical-align: middle">
+    <div </div></td>
+</tr>
+
+<tr id='pt1_5' class='hiddenRow'>
+    <td class='passCase' style="vertical-align: middle"><div class='testcase'>test_05_gotohome</div></td>
+    <td style="vertical-align: middle"></td>
+    <td colspan='5' align='center'>
+    
+    <!--默认收起错误信息 -Findyou-->
+    <button id='btn_pt1_5' type="button"  class="btn btn-xs collapsed" data-toggle="collapse" data-target='#div_pt1_5'>通过</button>
+    <div id='div_pt1_5' class="collapse">  
+
+    <!-- 默认展开错误信息 -Findyou /  修复失败按钮的颜色 -- Gelomen 
+    <button id='btn_pt1_5' type="button"  class="btn btn-xs" data-toggle="collapse" data-target='#div_pt1_5,#div_pt1_5_screenshot'>通过</button>
+    <div id='div_pt1_5' class="collapse in"> -->
+    
+    <pre style="text-align:left">
+    
+pt1_5: --&gt; my_page.goto_home
+移动到顶部
+去ta窝
+--&gt; my_page.click_roommore
+点击roommore
+--&gt; my_page.click_exitroom
+点击退出房间
+--&gt; my_page.check_exitroom
+检查是否退出房间False
+
+
+    </pre>
+    </div>
+    <td class="text-center" style="vertical-align: middle">
+    <div </div></td>
+</tr>
+
+<tr id='pt1_6' class='hiddenRow'>
+    <td class='passCase' style="vertical-align: middle"><div class='testcase'>test_06_focuson</div></td>
+    <td style="vertical-align: middle"></td>
+    <td colspan='5' align='center'>
+    
+    <!--默认收起错误信息 -Findyou-->
+    <button id='btn_pt1_6' type="button"  class="btn btn-xs collapsed" data-toggle="collapse" data-target='#div_pt1_6'>通过</button>
+    <div id='div_pt1_6' class="collapse">  
+
+    <!-- 默认展开错误信息 -Findyou /  修复失败按钮的颜色 -- Gelomen 
+    <button id='btn_pt1_6' type="button"  class="btn btn-xs" data-toggle="collapse" data-target='#div_pt1_6,#div_pt1_6_screenshot'>通过</button>
+    <div id='div_pt1_6' class="collapse in"> -->
+    
+    <pre style="text-align:left">
+    
+pt1_6: --&gt; my_page.check_focuson
+检查关注是否可点击
+
+
+    </pre>
+    </div>
+    <td class="text-center" style="vertical-align: middle">
+    <div </div></td>
+</tr>
+
+<tr id='pt1_7' class='hiddenRow'>
+    <td class='passCase' style="vertical-align: middle"><div class='testcase'>test_07_chat_jiaru</div></td>
+    <td style="vertical-align: middle"></td>
+    <td colspan='5' align='center'>
+    
+    <!--默认收起错误信息 -Findyou-->
+    <button id='btn_pt1_7' type="button"  class="btn btn-xs collapsed" data-toggle="collapse" data-target='#div_pt1_7'>通过</button>
+    <div id='div_pt1_7' class="collapse">  
+
+    <!-- 默认展开错误信息 -Findyou /  修复失败按钮的颜色 -- Gelomen 
+    <button id='btn_pt1_7' type="button"  class="btn btn-xs" data-toggle="collapse" data-target='#div_pt1_7,#div_pt1_7_screenshot'>通过</button>
+    <div id='div_pt1_7' class="collapse in"> -->
+    
+    <pre style="text-align:left">
+    
+pt1_7: --&gt; my_page.click_chat
+检查私聊
+--&gt; my_page.click_user
+点击右上角
+--&gt; my_page.click_jiaruheimingd
+点击加入黑名单
+toast信息为已经成功将对方加入黑名单
+
+
+    </pre>
+    </div>
+    <td class="text-center" style="vertical-align: middle">
+    <div </div></td>
+</tr>
+
+<tr id='pt1_8' class='hiddenRow'>
+    <td class='passCase' style="vertical-align: middle"><div class='testcase'>test_08_chat_yichu</div></td>
+    <td style="vertical-align: middle"></td>
+    <td colspan='5' align='center'>
+    
+    <!--默认收起错误信息 -Findyou-->
+    <button id='btn_pt1_8' type="button"  class="btn btn-xs collapsed" data-toggle="collapse" data-target='#div_pt1_8'>通过</button>
+    <div id='div_pt1_8' class="collapse">  
+
+    <!-- 默认展开错误信息 -Findyou /  修复失败按钮的颜色 -- Gelomen 
+    <button id='btn_pt1_8' type="button"  class="btn btn-xs" data-toggle="collapse" data-target='#div_pt1_8,#div_pt1_8_screenshot'>通过</button>
+    <div id='div_pt1_8' class="collapse in"> -->
+    
+    <pre style="text-align:left">
+    
+pt1_8: --&gt; my_page.click_yichuheimingdan
+移除黑名单
+toast信息为已经成功将对方移除黑名单
+
+
+    </pre>
+    </div>
+    <td class="text-center" style="vertical-align: middle">
+    <div </div></td>
+</tr>
+
+<tr id='pt1_9' class='hiddenRow'>
+    <td class='passCase' style="vertical-align: middle"><div class='testcase'>test_09_fans</div></td>
+    <td style="vertical-align: middle"></td>
+    <td colspan='5' align='center'>
+    
+    <!--默认收起错误信息 -Findyou-->
+    <button id='btn_pt1_9' type="button"  class="btn btn-xs collapsed" data-toggle="collapse" data-target='#div_pt1_9'>通过</button>
+    <div id='div_pt1_9' class="collapse">  
+
+    <!-- 默认展开错误信息 -Findyou /  修复失败按钮的颜色 -- Gelomen 
+    <button id='btn_pt1_9' type="button"  class="btn btn-xs" data-toggle="collapse" data-target='#div_pt1_9,#div_pt1_9_screenshot'>通过</button>
+    <div id='div_pt1_9' class="collapse in"> -->
+    
+    <pre style="text-align:left">
+    
+pt1_9: --&gt; my_page.click_fans
+点击粉丝
+
+
+    </pre>
+    </div>
+    <td class="text-center" style="vertical-align: middle">
+    <div </div></td>
+</tr>
+
+<tr id='pt1_10' class='hiddenRow'>
+    <td class='passCase' style="vertical-align: middle"><div class='testcase'>test_10_personal_homepage</div></td>
+    <td style="vertical-align: middle"></td>
+    <td colspan='5' align='center'>
+    
+    <!--默认收起错误信息 -Findyou-->
+    <button id='btn_pt1_10' type="button"  class="btn btn-xs collapsed" data-toggle="collapse" data-target='#div_pt1_10'>通过</button>
+    <div id='div_pt1_10' class="collapse">  
+
+    <!-- 默认展开错误信息 -Findyou /  修复失败按钮的颜色 -- Gelomen 
+    <button id='btn_pt1_10' type="button"  class="btn btn-xs" data-toggle="collapse" data-target='#div_pt1_10,#div_pt1_10_screenshot'>通过</button>
+    <div id='div_pt1_10' class="collapse in"> -->
+    
+    <pre style="text-align:left">
+    
+pt1_10: --&gt; my_page.click_home_page
+点击个人主页
+--&gt; my_page.check_userinfo_touxiang
+个人信息头像
+--&gt; my_page.check_tab
+检查用户标签
+--&gt; my_page.check_guanzhu
+检查关注
+--&gt; my_page.check_fans
+检查粉丝
+--&gt; my_page.check_shouhu
+检查守护榜
+--&gt; my_page.check_gift
+检查礼物
+--&gt; my_page.move_to_bot
+移动到底部
+--&gt; my_page.check_magic
+检查魔法
+--&gt; my_page.check_car
+检查座驾
+--&gt; my_page.click_edit
+点击编辑个人资料
+--&gt; my_page.click_edit_nickname
+点击个人昵称
+--&gt; my_page.sendkey_nickname
+输入随机昵称f
+/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/uiautomator2/session.py:216: Warning: set FastInputIME failed. use "d(focused=True).set_text instead"
+  Warning)
+--&gt; my_page.click_savenickname
+点击保存
+--&gt; my_page.click_sign
+点击个性签名
+--&gt; my_page.senk_sign
+输入个性签名
+--&gt; my_page.click_save_sign
+点击保存个性签名
+
+
+    </pre>
+    </div>
+    <td class="text-center" style="vertical-align: middle">
+    <div </div></td>
+</tr>
+
+<tr class='errorClass warning'>
+    <td>_ErrorHolder</td>
+    <td></td>
+    <td class="text-center">1</td>
+    <td class="text-center">0</td>
+    <td class="text-center">0</td>
+    <td class="text-center">1</td>
+    <td class="text-center">22.06秒</td>
+    <td class="text-center"><a href="javascript:showClassDetail('c2',1)" class="detail" id='c2'>详细</a></td>
+</tr>
+
+<tr id='et2_1' class='none'>
+    <td class='errorCase' style="vertical-align: middle"><div class='testcase'>testLogin)</div></td>
+    <td style="vertical-align: middle"></td>
+    <td colspan='5' align='center'>
+    
+    <!--默认收起错误信息 -Findyou-->
+    <button id='btn_et2_1' type="button"  class="btn btn-xs collapsed" data-toggle="collapse" data-target='#div_et2_1'>错误</button>
+    <div id='div_et2_1' class="collapse">  
+
+    <!-- 默认展开错误信息 -Findyou /  修复失败按钮的颜色 -- Gelomen 
+    <button id='btn_et2_1' type="button"  class="btn btn-xs" data-toggle="collapse" data-target='#div_et2_1,#div_et2_1_screenshot'>错误</button>
+    <div id='div_et2_1' class="collapse in"> -->
+    
+    <pre style="text-align:left">
+    
+et2_1: --&gt; my_page.click_home_page
+点击个人主页
+--&gt; my_page.check_userinfo_touxiang
+个人信息头像
+--&gt; my_page.check_tab
+检查用户标签
+--&gt; my_page.check_guanzhu
+检查关注
+--&gt; my_page.check_fans
+检查粉丝
+--&gt; my_page.check_shouhu
+检查守护榜
+--&gt; my_page.check_gift
+检查礼物
+--&gt; my_page.move_to_bot
+移动到底部
+--&gt; my_page.check_magic
+检查魔法
+--&gt; my_page.check_car
+检查座驾
+--&gt; my_page.click_edit
+点击编辑个人资料
+--&gt; my_page.click_edit_nickname
+点击个人昵称
+--&gt; my_page.sendkey_nickname
+输入随机昵称f
+/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/uiautomator2/session.py:216: Warning: set FastInputIME failed. use "d(focused=True).set_text instead"
+  Warning)
+--&gt; my_page.click_savenickname
+点击保存
+--&gt; my_page.click_sign
+点击个性签名
+--&gt; my_page.senk_sign
+输入个性签名
+--&gt; my_page.click_save_sign
+点击保存个性签名
+Traceback (most recent call last):
+  File "/Users/qfl/lqf_work/aserver/siyu-test/Public/Decorator.py", line 141, in wrapper
+    ret = func(*args, **kwargs)
+  File "/Users/qfl/lqf_work/aserver/siyu-test/TestSuite_demo/test_test/test_03_my_other.py", line 12, in setUpClass
+    self.d.app_stop_all()
+AttributeError: type object 'testLogin' has no attribute 'd'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/qfl/lqf_work/aserver/siyu-test/Public/Decorator.py", line 159, in wrapper
+    raise Exception(flag + _screenshot(func.__qualname__))
+Exception: IMAGE:testLogin.setUpClass-20190729151220.PNG
+
+
+    </pre>
+    </div>
+    <td class="text-center" style="vertical-align: middle">
+    <div </br><a class="screenshot" href="javascript:void(0)" img="testLogin.setUpClass-20190729151220.PNG">testLogin.setUpClass-20190729151220.PNG</a></div></td>
+</tr>
+
+<tr id='total_row' class="text-center active">
+    <td colspan='2'>总计</td>
+    <td>11</td>
+    <td>8</td>
+    <td>1</td>
+    <td>2</td>
+    <td>88.52秒</td>
+    <td>通过率：72.73%</td>
+</tr>
+</table>
+
+<div id='ending'>&nbsp;</div>
+    <div id="toTop" style=" position:fixed;right:50px; bottom:30px; width:20px; height:20px;cursor:pointer; display: none">
+    <a><span class="glyphicon glyphicon-eject" style = "font-size:30px;" aria-hidden="true">
+    </span></a></div>
+    
+
+</body>
+</html>

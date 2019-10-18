@@ -1,0 +1,5 @@
+2019-07-29 15:17:51,013 - EML-AL00 - INFO - udid: CLB7N19219005712-dc:90:88:65:3d:d8-EML-AL00
+2019-07-29 15:17:51,207 - EML-AL00 - DEBUG - --> testMyOther.setUpClass
+2019-07-29 15:17:51,209 - EML-AL00 - ERROR - Exception, type object 'testMyOther' has no attribute 'd'
+2019-07-29 15:17:51,210 - EML-AL00 - ERROR - <-- testMyOther.setUpClass, Exception, Error
+

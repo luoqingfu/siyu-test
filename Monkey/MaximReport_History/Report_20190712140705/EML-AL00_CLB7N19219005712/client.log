@@ -1,0 +1,26 @@
+2019-07-12 14:07:12,558 - EML-AL00 - INFO - udid: CLB7N19219005712-dc:90:88:65:3d:d8-EML-AL00
+2019-07-12 14:07:12,657 - EML-AL00 - DEBUG - --> abcd.setUpClass
+2019-07-12 14:07:13,012 - EML-AL00 - DEBUG - <-- abcd.setUpClass, Success
+
+2019-07-12 14:07:13,013 - EML-AL00 - DEBUG - --> abcd.test_install_login
+2019-07-12 14:07:20,634 - EML-AL00 - INFO - --> login_page.input_username
+2019-07-12 14:07:20,635 - EML-AL00 - INFO - 输入用户名:username
+2019-07-12 14:07:28,562 - EML-AL00 - INFO - --> login_page.input_password
+2019-07-12 14:07:28,563 - EML-AL00 - INFO - 输入密码:password
+2019-07-12 14:07:29,094 - EML-AL00 - INFO - --> login_page.click_login_btn
+2019-07-12 14:07:29,094 - EML-AL00 - INFO - 点击登录按钮
+2019-07-12 14:07:29,569 - EML-AL00 - DEBUG - <-- abcd.test_install_login, Success
+
+2019-07-12 14:07:29,570 - EML-AL00 - INFO - MONKEY_SHELL:CLASSPATH=/sdcard/monkey.jar:/sdcard/framework.jar exec app_process /system/bin tv.panda.test.monkey.Monkey -p com.github.android_app_bootstrap --running-minutes 1 --uiautomatordfs --act-whitelist-file /sdcard/awl.strings --throttle 500  -v -v  >/sdcard/monkeyout.txt 2>/sdcard/monkeyerr.txt &
+2019-07-12 14:07:29,571 - EML-AL00 - INFO - Clearing monkey env
+2019-07-12 14:07:29,844 - EML-AL00 - INFO - Clear monkey env success
+2019-07-12 14:07:29,931 - EML-AL00 - INFO - push jar file--->monkey.jar framework.jar
+2019-07-12 14:07:29,942 - EML-AL00 - INFO - push white_list file---> awl.strings 
+2019-07-12 14:07:29,951 - EML-AL00 - INFO - push actions file---> max.xpath.actions 
+2019-07-12 14:07:29,952 - EML-AL00 - INFO - setting AdbIME as default
+2019-07-12 14:07:33,192 - EML-AL00 - INFO - install adbkeyboard and set as default
+2019-07-12 14:07:33,208 - EML-AL00 - INFO - push string file---> max.strings 
+2019-07-12 14:07:33,209 - EML-AL00 - INFO - starting run monkey
+2019-07-12 14:07:33,210 - EML-AL00 - INFO - It will be take about 1 minutes,please be patient ...........................
+2019-07-12 14:09:05,331 - EML-AL00 - INFO - Maxim monkey run end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+2019-07-12 14:09:07,167 - EML-AL00 - INFO - release device CLB7N19219005712 

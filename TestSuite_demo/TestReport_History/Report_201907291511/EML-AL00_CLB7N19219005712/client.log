@@ -1,0 +1,5 @@
+2019-07-29 15:10:07,354 - EML-AL00 - INFO - udid: CLB7N19219005712-dc:90:88:65:3d:d8-EML-AL00
+2019-07-29 15:10:07,650 - EML-AL00 - DEBUG - --> testLogin.setUpClass
+2019-07-29 15:10:07,652 - EML-AL00 - ERROR - Exception, type object 'testLogin' has no attribute 'd'
+2019-07-29 15:10:07,653 - EML-AL00 - ERROR - <-- testLogin.setUpClass, Exception, Error
+
